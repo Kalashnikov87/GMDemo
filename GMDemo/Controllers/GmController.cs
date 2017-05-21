@@ -1,8 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using System.Web.Mvc;
+using GMDemo.Models;
+using GMDemo.Repository;
 
 namespace GMDemo.Controllers
 {
@@ -11,7 +11,21 @@ namespace GMDemo.Controllers
         // GET: Gm
         public ActionResult Index()
         {
-            return View();
+            return View("Index");
+        }
+
+        public ActionResult GetSomeData()
+        {
+            var result = new List<GmModel>();
+            try
+            {
+                result = MockData.GetSampleData();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine("Error: " + ex.Message);
+            }
+            return Json(result);
         }
     }
 }
