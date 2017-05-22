@@ -9,17 +9,16 @@ namespace GMDemo.Repository
         {
             var result = new List<GmModel>();
 
-            for (var i = 0; i <= 2000; i++)
+            for (var i = 0; i < 75; i++)
             {
                 result.Add(new GmModel
                 {
-                    MachineName = $"Value{i}",
-                    MachineDescription = $"Value{i}",
+                    MachineName = $"Machine {i}",
+                    MachineDescription = $"This is machine {i}",
                     Amount = i,
                     CostPerUnit = i,
-                    Total = i + i
+                    Total = i * i
                 });
-
             }
             return result;
         }

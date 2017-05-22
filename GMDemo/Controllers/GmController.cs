@@ -13,8 +13,8 @@ namespace GMDemo.Controllers
         {
             return View("Index");
         }
-
-        public ActionResult GetSomeData()
+        [HttpGet]
+        public JsonResult GetSomeData()
         {
             var result = new List<GmModel>();
             try
@@ -25,7 +25,8 @@ namespace GMDemo.Controllers
             {
                 Console.WriteLine("Error: " + ex.Message);
             }
-            return Json(result);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
-    }
+    
+}
 }

@@ -5,28 +5,24 @@
             type: "GET",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            url: "/Controller/Search",
+            url: "/Gm/GetSomeData",
             data: null,
             cache: false,
-            success: function () {
-               
+            success: function (data) {
+                populateGrid(data);
             },
-            error: function () {
-                Console.log("Error occured in data retreval");
+            error: function (xhr, textStatus, error) {
+                console.log(xhr.statusText);
+                console.log(textStatus);
+                console.log(error);
             }
         });
     }
 
     //builds the initial tiles
-    function populateGrid() {
-
-        var products = [
-            { "MachineName": "New", "MachineDescription": "10", "Amount": "12", "CostPerUnit": "10", "Total": "10"},
-            { "MachineName": "New", "MachineDescription": "10", "Amount": "12", "CostPerUnit": "10", "Total": "10" },
-            { "MachineName": "New", "MachineDescription": "10", "Amount": "12", "CostPerUnit": "10", "Total": "10" }
-        ];
-
-
+    function populateGrid(data) {
+        var products = data;
+        
         $("#grid").kendoGrid({
             dataSource: {
                 data: products,
@@ -50,6 +46,7 @@
             sortable: true,
             filterable: true,
             pageable: {
+                pageSizes: true,  
                 input: true,
                 numeric: false
             },
@@ -58,7 +55,8 @@
                 { field: "MachineDescription", title: "Machine Description" },
                 { field: "Amount", title: "Amount", format: "{0:c}" },
                 { field: "CostPerUnit", title: "Cost Per Unit", format: "{0:c}" },
-                { field: "Total", title: "Total", format: "{0:c}" }
+                { field: "Total", title: "Total", format: "{0:c}" },
+                { command: ["edit", "destroy"], title: "&nbsp;", width: "250px;" }
             ]
         });
     }
@@ -66,7 +64,7 @@
 
     //fire calls off here initially
     $(function () {
-        populateGrid();
+        getDataFromSource();
     });
 
     return {
