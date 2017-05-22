@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Web.Mvc;
 using GMDemo.Controllers;
 using GMDemo.Logger;
@@ -12,7 +13,7 @@ namespace GMDemo.Tests
     [TestClass]
     public class UnitTest1
     {
-        private ILogger _logger;
+        private Mock<ILogger> _mlogger;
         private Mock<IGmData> _mockRepo;
 
 
@@ -34,37 +35,40 @@ namespace GMDemo.Tests
                     });
                 return machines;
             });
+            _mlogger = new Mock<ILogger>();
         }
 
         [TestMethod]
         public void Check_If_Controller_Method_Returns_The_Correct_View()
         {
-            var controller = new GmController(_mockRepo.Object, _logger);
+            var controller = new GmController(_mockRepo.Object, _mlogger.Object);
             var result = controller.Index() as ViewResult;
-            if (result != null) Assert.AreEqual("Index", result.ViewName);
+            Assert.IsNotNull(result);
+            Assert.AreEqual("Index", result.ViewName);
         }
 
         [TestMethod]
         public void Check_If_The_Method_Returns_The_Correct_Amount_Of_Results()
         {
-            var controller = new GmController(_mockRepo.Object, _logger);
+            var controller = new GmController(_mockRepo.Object, _mlogger.Object);
             var actual = controller.GetGmData();
             var result = actual.Data as List<GmModel>;
 
             Assert.IsNotNull(result);
             Assert.AreEqual(200, result.Count);
         }
-
 
         [TestMethod]
-        public void Check_If_The_Method_Returns_The_Correct_Amount_Of_Results2()
+        public void Check_If_The_Logger_Method_Is_Called_When_Exception_Occurs()
         {
-            var controller = new GmController(_mockRepo.Object, _logger);
-            var actual = controller.GetGmData();
-            var result = actual.Data as List<GmModel>;
+            var localMockRepo = new Mock<IGmData>();
+            localMockRepo.Setup(machineRepo => machineRepo.GetSampleData()).Returns(() => { throw new Exception("Some db error"); });
 
-            Assert.IsNotNull(result);
-            Assert.AreEqual(200, result.Count);
+            var controller = new GmController(localMockRepo.Object, _mlogger.Object);
+            controller.GetGmData();
+            
+            _mlogger.Verify(mLog => mLog.Log(It.IsAny<Exception>()), Times.AtLeastOnce);
         }
+
     }
 }
