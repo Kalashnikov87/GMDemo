@@ -8,7 +8,9 @@ Please refer to future enhancements for ideas on integrating to a live database,
  - Telerik Kendo UI controls for UI elements
  - Jquery for working with UI elements
  - Microsoft Test Runner for unit testing
+ 
 Further enhancements:
+
  - Add actual database interface so we can chat to Azure
  - setup sample database on Azure
  - create, read, update and delete records using dapper ORM
