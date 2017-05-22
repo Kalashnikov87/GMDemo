@@ -8,6 +8,7 @@ namespace GMDemo
     {
         protected void Application_Start()
         {
+            AutoFacConfig.ConfigureContainer();
             AreaRegistration.RegisterAllAreas();
             RouteConfig.RegisterRoutes(RouteTable.Routes);
         }

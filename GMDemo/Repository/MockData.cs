@@ -3,14 +3,18 @@ using GMDemo.Models;
 
 namespace GMDemo.Repository
 {
-    public static class MockData
+    public class MockData : IGmData
     {
+        List<GmModel> IGmData.GetSampleData()
+        {
+            return GetSampleData();
+        }
+
         public static List<GmModel> GetSampleData()
         {
             var result = new List<GmModel>();
 
             for (var i = 0; i < 75; i++)
-            {
                 result.Add(new GmModel
                 {
                     MachineName = $"Machine {i}",
@@ -19,9 +23,7 @@ namespace GMDemo.Repository
                     CostPerUnit = i,
                     Total = i * i
                 });
-            }
             return result;
         }
     }
-    
 }

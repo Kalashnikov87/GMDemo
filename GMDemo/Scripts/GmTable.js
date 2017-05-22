@@ -1,17 +1,17 @@
-﻿var faClientProductIndexService = function () {
+﻿var faClientProductIndexService = function() {
 
     function getDataFromSource() {
         $.ajax({
             type: "GET",
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            url: "/Gm/GetSomeData",
+            url: "/Gm/GetGmData",
             data: null,
             cache: false,
-            success: function (data) {
+            success: function(data) {
                 populateGrid(data);
             },
-            error: function (xhr, textStatus, error) {
+            error: function(xhr, textStatus, error) {
                 console.log(xhr.statusText);
                 console.log(textStatus);
                 console.log(error);
@@ -22,7 +22,7 @@
     //builds the initial tiles
     function populateGrid(data) {
         var products = data;
-        
+
         $("#grid").kendoGrid({
             dataSource: {
                 data: products,
@@ -46,24 +46,24 @@
             sortable: true,
             filterable: true,
             pageable: {
-                pageSizes: true,  
+                pageSizes: true,
                 input: true,
                 numeric: false
             },
             columns: [
                 "MachineName",
                 { field: "MachineDescription", title: "Machine Description" },
-                { field: "Amount", title: "Amount", format: "{0:c}" },
+                { field: "Amount", title: "Amount" },
                 { field: "CostPerUnit", title: "Cost Per Unit", format: "{0:c}" },
                 { field: "Total", title: "Total", format: "{0:c}" },
                 { command: ["edit", "destroy"], title: "&nbsp;", width: "250px;" }
             ]
         });
     }
-    
+
 
     //fire calls off here initially
-    $(function () {
+    $(function() {
         getDataFromSource();
     });
 
